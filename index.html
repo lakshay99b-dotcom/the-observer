@@ -1,1 +1,1204 @@
-PLACEHOLDER_WILL_REPLACE
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almanac — New Tab</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='4' fill='#e8a854'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-0: #080b14;
+  --bg-1: #0e1424;
+  --bg-2: #141c33;
+  --line: rgba(140, 163, 204, 0.14);
+  --line-strong: rgba(140, 163, 204, 0.26);
+  --ink: #d9e1f2;
+  --ink-dim: #8895b3;
+  --ink-faint: #5c6b8c;
+  --parchment: #ece4cf;
+  --amber: #e8a854;
+  --amber-dim: rgba(232, 168, 84, 0.35);
+  --constellation: #4a6f97;
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --radius: 14px;
+}
+
+*{ box-sizing: border-box; }
+::selection{ background: var(--amber-dim); color: var(--parchment); }
+
+html, body{
+  height: 100%;
+  margin: 0;
+}
+
+body{
+  background: radial-gradient(ellipse 120% 80% at 50% -10%, #17203a 0%, var(--bg-0) 55%);
+  color: var(--ink);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+#sky{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.wrap{
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 24px 64px;
+}
+
+.topbar{
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 4px 28px;
+}
+
+.topbar-left{ font-family: var(--font-display); font-size: 19px; color: var(--ink-dim); font-style: italic; }
+.topbar-left #user-name{ color: var(--parchment); font-style: normal; }
+
+.topbar-center{ text-align: center; }
+.clock{
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 40px;
+  letter-spacing: 0.04em;
+  color: var(--parchment);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.date{
+  margin-top: 6px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.topbar-right{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.search{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(20, 28, 51, 0.6);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 16px;
+  width: 240px;
+  transition: border-color 0.2s, width 0.2s;
+}
+.search:focus-within{ border-color: var(--amber-dim); width: 280px; }
+.search-icon{ color: var(--ink-faint); flex-shrink: 0; }
+.search input{
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  width: 100%;
+}
+.search input::placeholder{ color: var(--ink-faint); }
+
+.icon-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(20, 28, 51, 0.6);
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, transform 0.3s;
+}
+.icon-btn:hover{ border-color: var(--amber-dim); color: var(--amber); transform: rotate(30deg); }
+.icon-btn:focus-visible, .search:focus-within, button:focus-visible, input:focus-visible, textarea:focus-visible{
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.quicklinks{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.quicklink{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(20, 28, 51, 0.45);
+  color: var(--ink-dim);
+  text-decoration: none;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.quicklink:hover{ border-color: var(--amber-dim); color: var(--parchment); background: rgba(232, 168, 84, 0.07); }
+.quicklink .dot{
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--constellation);
+  flex-shrink: 0;
+}
+
+.grid{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 18px;
+}
+
+.card{
+  grid-column: span 3;
+  background: linear-gradient(180deg, rgba(20, 28, 51, 0.68), rgba(14, 20, 36, 0.68));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px 22px;
+  backdrop-filter: blur(6px);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  padding: 1px;
+  background: linear-gradient(160deg, rgba(232,168,84,0.18), transparent 40%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.card-skychart{ grid-column: span 3; grid-row: span 2; }
+.card-apod{ grid-column: span 3; grid-row: span 2; }
+.card-iss{ grid-column: span 2; }
+.card-people{ grid-column: span 2; }
+.card-launch{ grid-column: span 2; }
+.card-notes{ grid-column: span 6; }
+
+.card-head{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 10px;
+}
+.card-head h2{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--parchment);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+.src{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.live-dot::before{
+  content: "";
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #6fce8f;
+  margin-right: 6px;
+  box-shadow: 0 0 6px #6fce8f;
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse{ 0%,100%{ opacity: 1; } 50%{ opacity: 0.35; } }
+
+.skeleton{
+  height: 160px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+@keyframes shimmer{ 0%{ background-position: 200% 0; } 100%{ background-position: -200% 0; } }
+
+.apod-media{
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  aspect-ratio: 16/10;
+  background: var(--bg-1);
+}
+.apod-media img, .apod-media iframe, .apod-media video{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border: none;
+  display: block;
+}
+.apod-title{
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--parchment);
+  margin: 12px 0 4px;
+}
+.apod-date{
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+}
+.apod-more{
+  margin-top: 10px;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--amber);
+  font-family: var(--font-body);
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.apod-more:hover{ border-color: var(--amber-dim); background: rgba(232,168,84,0.08); }
+
+#skychart-canvas{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  background: radial-gradient(ellipse at 50% 40%, #101a30 0%, #0a0f1e 75%);
+  border: 1px solid var(--line);
+}
+.skychart-readout{
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-dim);
+  line-height: 1.7;
+}
+.skychart-readout .planet-name{ color: var(--amber); }
+
+.iss-map{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/1;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(rgba(140,163,204,0.06) 1px, transparent 1px) 0 0/100% 25%,
+    linear-gradient(90deg, rgba(140,163,204,0.06) 1px, transparent 1px) 0 0/12.5% 100%,
+    #0d1426;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.iss-dot{
+  position: absolute;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 12px 3px rgba(232,168,84,0.6);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  transition: top 1s linear, left 1s linear;
+}
+.iss-dot::after{
+  content: "ISS";
+  position: absolute;
+  top: 14px; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  white-space: nowrap;
+}
+
+.telemetry{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0;
+}
+.telemetry > div{
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 6px;
+  text-align: center;
+}
+.telemetry dt{
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+}
+.telemetry dd{
+  margin: 4px 0 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--parchment);
+}
+
+.people-count{
+  font-family: var(--font-display);
+  font-size: 52px;
+  color: var(--amber);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.people-count::after{
+  content: " humans currently in orbit";
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-dim);
+  vertical-align: middle;
+}
+.people-list{
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+.people-list li{
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 4px;
+}
+.people-list li span{ color: var(--ink-faint); font-family: var(--font-mono); font-size: 10.5px; }
+
+.launch-mission{
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--parchment);
+  margin: 0 0 6px;
+}
+.launch-meta{
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  margin: 0 0 14px;
+}
+.countdown{
+  display: flex;
+  gap: 12px;
+}
+.countdown div{ text-align: center; }
+.countdown .num{
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--amber);
+  display: block;
+}
+.countdown .unit{
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.card-notes .card-body{ display: flex; flex-direction: column; }
+#notes-area{
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+  background: rgba(10, 15, 30, 0.5);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  padding: 12px 14px;
+  line-height: 1.6;
+}
+#notes-area::placeholder{ color: var(--ink-faint); }
+.notes-status{
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-align: right;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.notes-status.show{ opacity: 1; }
+
+.error-text{
+  color: var(--ink-faint);
+  font-size: 12.5px;
+  font-style: italic;
+}
+
+.modal-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 9, 17, 0.72);
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  padding: 20px;
+}
+.modal-backdrop.open{ display: flex; }
+.modal{
+  position: relative;
+  max-width: 560px;
+  width: 100%;
+  max-height: 82vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #161f38, #0f1526);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 30px 32px;
+}
+.modal h3{
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--parchment);
+  margin: 0 0 4px;
+}
+.modal-date{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin: 0 0 16px;
+}
+.modal p{
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-dim);
+}
+.modal-close{
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+  color: var(--ink-dim);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.modal-close:hover{ color: var(--amber); border-color: var(--amber-dim); }
+
+.settings-modal{ max-width: 460px; }
+.field{
+  display: block;
+  margin-bottom: 16px;
+  border: none;
+  padding: 0;
+}
+.field span, .field legend{
+  display: block;
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+}
+.field a{ color: var(--amber); text-decoration: none; text-transform: none; letter-spacing: normal; }
+.field input[type="text"]{
+  width: 100%;
+  background: rgba(10, 15, 30, 0.5);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+}
+.bookmark-row{
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.bookmark-row input{
+  background: rgba(10, 15, 30, 0.5);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 9px;
+  color: var(--ink);
+  font-size: 12.5px;
+  font-family: var(--font-body);
+}
+.bookmark-row input.bm-name{ width: 90px; }
+.bookmark-row input.bm-url{ flex: 1; }
+.bookmark-row button{
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink-faint);
+  border-radius: 6px;
+  cursor: pointer;
+  width: 30px;
+}
+.bookmark-row button:hover{ color: #d9756b; border-color: #d9756b; }
+
+.text-btn{
+  background: none;
+  border: none;
+  color: var(--amber);
+  font-size: 12.5px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.primary-btn{
+  width: 100%;
+  margin-top: 6px;
+  background: var(--amber);
+  border: none;
+  color: #1a1206;
+  font-weight: 600;
+  font-size: 13.5px;
+  padding: 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+.primary-btn:hover{ filter: brightness(1.08); }
+
+@media (max-width: 860px){
+  .topbar{ grid-template-columns: 1fr; text-align: center; gap: 12px; }
+  .topbar-left, .topbar-right{ justify-content: center; }
+  .topbar-right{ flex-wrap: wrap; }
+  .grid{ grid-template-columns: 1fr; }
+  .card, .card-skychart, .card-apod, .card-iss, .card-people, .card-launch, .card-notes{
+    grid-column: span 1;
+    grid-row: auto;
+  }
+  .clock{ font-size: 32px; }
+}
+</style>
+</head>
+<body>
+
+  <canvas id="sky"></canvas>
+
+  <div class="wrap">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <span class="greeting" id="greeting">Good evening, <span id="user-name">Observer</span></span>
+      </div>
+
+      <div class="topbar-center">
+        <time id="clock" class="clock">00:00:00</time>
+        <div class="date" id="date">—</div>
+      </div>
+
+      <div class="topbar-right">
+        <form id="search-form" class="search" role="search">
+          <svg class="search-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="16.2" y1="16.2" x2="21" y2="21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <input type="text" id="search-input" placeholder="Search the web…" autocomplete="off">
+        </form>
+        <button id="settings-btn" class="icon-btn" aria-label="Open settings" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 3.5v2.4M12 18.1v2.4M20.5 12h-2.4M5.9 12H3.5M17.7 6.3l-1.7 1.7M8 16l-1.7 1.7M17.7 17.7L16 16M8 8 6.3 6.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <nav class="quicklinks" id="quicklinks" aria-label="Bookmarks"></nav>
+
+    <main class="grid">
+
+      <section class="card card-apod" id="card-apod" aria-labelledby="apod-title">
+        <div class="card-head">
+          <h2 id="apod-title">Picture of the Day</h2>
+          <span class="src">NASA APOD</span>
+        </div>
+        <div class="card-body" id="apod-body">
+          <div class="skeleton"></div>
+        </div>
+      </section>
+      
+      <section class="card card-skychart" id="card-skychart" aria-labelledby="skychart-title">
+        <div class="card-head">
+          <h2 id="skychart-title">Tonight's Almanac</h2>
+          <span class="src">Physical constants</span>
+        </div>
+        <div class="card-body">
+          <canvas id="skychart-canvas" width="520" height="320"></canvas>
+          <div class="skychart-readout" id="skychart-readout">Charting the sky…</div>
+        </div>
+      </section>
+      
+      <section class="card card-iss" id="card-iss" aria-labelledby="iss-title">
+        <div class="card-head">
+          <h2 id="iss-title">ISS Position</h2>
+          <span class="src live-dot">wheretheiss.at</span>
+        </div>
+        <div class="card-body">
+          <div class="iss-map" id="iss-map">
+            <div class="iss-dot" id="iss-dot"></div>
+          </div>
+          <dl class="telemetry">
+            <div><dt>LAT</dt><dd id="iss-lat">—</dd></div>
+            <div><dt>LON</dt><dd id="iss-lon">—</dd></div>
+            <div><dt>ALT</dt><dd id="iss-alt">—</dd></div>
+            <div><dt>VEL</dt><dd id="iss-vel">—</dd></div>
+          </dl>
+        </div>
+      </section>
+      
+      <section class="card card-people" id="card-people" aria-labelledby="people-title">
+        <div class="card-head">
+          <h2 id="people-title">Currently in Orbit</h2>
+          <span class="src">People in Space</span>
+        </div>
+        <div class="card-body">
+          <div class="people-count" id="people-count">—</div>
+          <ul class="people-list" id="people-list"></ul>
+        </div>
+      </section>
+      
+      <section class="card card-launch" id="card-launch" aria-labelledby="launch-title">
+        <div class="card-head">
+          <h2 id="launch-title">Next Launch</h2>
+          <span class="src">Launch Library</span>
+        </div>
+        <div class="card-body" id="launch-body">
+          <div class="skeleton"></div>
+        </div>
+      </section>
+      <section class="card card-notes" id="card-notes" aria-labelledby="notes-title">
+        <div class="card-head">
+          <h2 id="notes-title">Field Notes</h2>
+          <span class="src">Saved locally</span>
+        </div>
+        <div class="card-body">
+          <textarea id="notes-area" placeholder="Jot down a thought, a wish, a coordinate…"></textarea>
+          <div class="notes-status" id="notes-status">Saved</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <div class="modal-backdrop" id="apod-modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="apod-modal-close" aria-label="Close">×</button>
+      <h3 id="modal-title"></h3>
+      <p class="modal-date" id="modal-date"></p>
+      <p id="modal-explanation"></p>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="settings-modal-backdrop">
+    <div class="modal settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <button class="modal-close" id="settings-modal-close" aria-label="Close">×</button>
+      <h3 id="settings-title">Settings</h3>
+
+      <label class="field">
+        <span>Your name</span>
+        <input type="text" id="settings-name" placeholder="Observer" maxlength="24">
+      </label>
+
+      <label class="field">
+        <span>NASA API key <a href="https://api.nasa.gov/" target="_blank" rel="noopener">(optional, get one)</a></span>
+        <input type="text" id="settings-nasa-key" placeholder="DEMO_KEY">
+      </label>
+
+      <fieldset class="field">
+        <legend>Bookmarks</legend>
+        <div id="bookmark-editor"></div>
+        <button type="button" id="add-bookmark" class="text-btn">+ Add bookmark</button>
+      </fieldset>
+
+      <button type="button" id="settings-save" class="primary-btn">Save changes</button>
+    </div>
+  </div>
+
+  <script>
+
+const STORE_KEY = "almanac:settings:v1";
+
+const defaultSettings = {
+  name: "Observer",
+  nasaKey: "",
+  bookmarks: [
+    { name: "GitHub", url: "https://github.com" },
+    { name: "Stardance", url: "https://stardance.dev" },
+    { name: "YouTube", url: "https://youtube.com" },
+  ],
+};
+
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (!raw) return { ...defaultSettings };
+    const parsed = JSON.parse(raw);
+    return { ...defaultSettings, ...parsed };
+  } catch (e) {
+    console.warn("Could not read settings, using defaults", e);
+    return { ...defaultSettings };
+  }
+}
+
+function saveSettings(settings) {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(settings));
+  } catch (e) {
+    console.warn("Could not save settings", e);
+  }
+}
+
+let settings = loadSettings();
+
+function tickClock() {
+  const now = new Date();
+  const clock = document.getElementById("clock");
+  const date = document.getElementById("date");
+  const h = String(now.getHours()).padStart(2, "0");
+  const m = String(now.getMinutes()).padStart(2, "0");
+  const s = String(now.getSeconds()).padStart(2, "0");
+  clock.textContent = `${h}:${m}:${s}`;
+  date.textContent = now.toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+
+  const hour = now.getHours();
+  const greetingWord =
+    hour < 5 ? "Good night" : hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  document.getElementById("greeting").firstChild.textContent = greetingWord + ", ";
+}
+
+function applyName() {
+  document.getElementById("user-name").textContent = settings.name || "Observer";
+}
+
+document.getElementById("search-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const q = document.getElementById("search-input").value.trim();
+  if (!q) return;
+  window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(q);
+});
+
+function renderQuickLinks() {
+  const nav = document.getElementById("quicklinks");
+  nav.innerHTML = "";
+  settings.bookmarks.forEach((bm) => {
+    if (!bm.name || !bm.url) return;
+    const a = document.createElement("a");
+    a.className = "quicklink";
+    a.href = bm.url;
+    a.innerHTML = `<span class="dot"></span>${escapeHtml(bm.name)}`;
+    nav.appendChild(a);
+  });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+const NOTES_KEY = "almanac:notes:v1";
+function initNotes() {
+  const area = document.getElementById("notes-area");
+  const status = document.getElementById("notes-status");
+  area.value = localStorage.getItem(NOTES_KEY) || "";
+  let debounceTimer = null;
+  area.addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      localStorage.setItem(NOTES_KEY, area.value);
+      status.textContent = "Saved " + new Date().toLocaleTimeString();
+      status.classList.add("show");
+      setTimeout(() => status.classList.remove("show"), 1500);
+    }, 500);
+  });
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add("open");
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove("open");
+}
+
+document.getElementById("settings-btn").addEventListener("click", () => {
+  document.getElementById("settings-name").value = settings.name;
+  document.getElementById("settings-nasa-key").value = settings.nasaKey;
+  renderBookmarkEditor();
+  openModal("settings-modal-backdrop");
+});
+document.getElementById("settings-modal-close").addEventListener("click", () => closeModal("settings-modal-backdrop"));
+document.getElementById("settings-modal-backdrop").addEventListener("click", (e) => {
+  if (e.target.id === "settings-modal-backdrop") closeModal("settings-modal-backdrop");
+});
+
+function renderBookmarkEditor() {
+  const container = document.getElementById("bookmark-editor");
+  container.innerHTML = "";
+  settings.bookmarks.forEach((bm, i) => {
+    const row = document.createElement("div");
+    row.className = "bookmark-row";
+    row.innerHTML = `
+      <input class="bm-name" type="text" placeholder="Name" value="${escapeAttr(bm.name)}">
+      <input class="bm-url" type="text" placeholder="https://…" value="${escapeAttr(bm.url)}">
+      <button type="button" aria-label="Remove">×</button>
+    `;
+    row.querySelector(".bm-name").addEventListener("input", (e) => (settings.bookmarks[i].name = e.target.value));
+    row.querySelector(".bm-url").addEventListener("input", (e) => (settings.bookmarks[i].url = e.target.value));
+    row.querySelector("button").addEventListener("click", () => {
+      settings.bookmarks.splice(i, 1);
+      renderBookmarkEditor();
+    });
+    container.appendChild(row);
+  });
+}
+
+function escapeAttr(str) {
+  return (str || "").replace(/"/g, "&quot;");
+}
+
+document.getElementById("add-bookmark").addEventListener("click", () => {
+  settings.bookmarks.push({ name: "", url: "" });
+  renderBookmarkEditor();
+});
+
+document.getElementById("settings-save").addEventListener("click", () => {
+  settings.name = document.getElementById("settings-name").value.trim() || "Observer";
+  settings.nasaKey = document.getElementById("settings-nasa-key").value.trim();
+  settings.bookmarks = settings.bookmarks.filter((b) => b.name && b.url);
+  saveSettings(settings);
+  applyName();
+  renderQuickLinks();
+  closeModal("settings-modal-backdrop");
+});
+
+async function loadApod() {
+  const body = document.getElementById("apod-body");
+  const key = settings.nasaKey || "DEMO_KEY";
+  try {
+    const res = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${encodeURIComponent(key)}`);
+    if (!res.ok) throw new Error("APOD request failed: " + res.status);
+    const data = await res.json();
+
+    const mediaUrl = data.hdurl || data.url;
+    const mediaHtml =
+      data.media_type === "video"
+        ? `<video src="${mediaUrl}" controls playsinline preload="metadata" title="APOD video"></video>`
+        : `<img src="${mediaUrl}" alt="${escapeAttr(data.title)}" loading="lazy">`;
+
+    body.innerHTML = `
+      <div class="apod-media">${mediaHtml}</div>
+      <div class="apod-title">${escapeHtml(data.title)}</div>
+      <div class="apod-date">${data.date}</div>
+      <button class="apod-more" id="apod-more-btn">Read the full story</button>
+    `;
+
+    document.getElementById("apod-more-btn").addEventListener("click", () => {
+      document.getElementById("modal-title").textContent = data.title;
+      document.getElementById("modal-date").textContent = data.date + (data.copyright ? ` · © ${data.copyright}` : "");
+      document.getElementById("modal-explanation").textContent = data.explanation;
+      openModal("apod-modal-backdrop");
+    });
+  } catch (err) {
+    console.warn("APOD widget failed", err);
+    body.innerHTML = `<p class="error-text">Couldn't reach NASA's picture archive right now. Try again shortly.</p>`;
+  }
+}
+
+document.getElementById("apod-modal-close").addEventListener("click", () => closeModal("apod-modal-backdrop"));
+document.getElementById("apod-modal-backdrop").addEventListener("click", (e) => {
+  if (e.target.id === "apod-modal-backdrop") closeModal("apod-modal-backdrop");
+});
+
+function projectToMap(lat, lon) {
+  // equirectangular projection onto the 2:1 map div
+  const x = ((lon + 180) / 360) * 100;
+  const y = ((90 - lat) / 180) * 100;
+  return { x, y };
+}
+
+async function loadIss() {
+  try {
+    const res = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
+    if (!res.ok) throw new Error("ISS request failed: " + res.status);
+    const data = await res.json();
+
+    const { x, y } = projectToMap(data.latitude, data.longitude);
+    const dot = document.getElementById("iss-dot");
+    dot.style.left = x + "%";
+    dot.style.top = y + "%";
+
+    document.getElementById("iss-lat").textContent = data.latitude.toFixed(2) + "°";
+    document.getElementById("iss-lon").textContent = data.longitude.toFixed(2) + "°";
+    document.getElementById("iss-alt").textContent = Math.round(data.altitude) + " km";
+    document.getElementById("iss-vel").textContent = Math.round(data.velocity).toLocaleString() + " km/h";
+  } catch (err) {
+    console.warn("ISS widget failed", err);
+    document.getElementById("iss-lat").textContent = "n/a";
+  }
+}
+
+
+async function loadPeopleInSpace() {
+  const countEl = document.getElementById("people-count");
+  const listEl = document.getElementById("people-list");
+  try {
+    // Open Notify is frequently down; use maintained community mirror
+    const res = await fetch("https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json");
+    if (!res.ok) throw new Error("people request failed: " + res.status);
+    const data = await res.json();
+
+    countEl.textContent = data.number;
+    listEl.innerHTML = (data.people || [])
+      .map((p) => {
+        const craft = p.spacecraft || p.craft || "—";
+        return `<li>${escapeHtml(p.name)}<span>${escapeHtml(craft)}</span></li>`;
+      })
+      .join("");
+  } catch (err) {
+    console.warn("People-in-space widget failed", err);
+    countEl.textContent = "—";
+    listEl.innerHTML = `<li class="error-text">Roster unavailable right now.</li>`;
+  }
+}
+
+let countdownInterval = null;
+
+async function loadNextLaunch() {
+  const body = document.getElementById("launch-body");
+  try {
+    // SpaceX community API is maintenance-only; use Launch Library 2 (The Space Devs)
+    const res = await fetch("https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=1&mode=list");
+    if (!res.ok) throw new Error("launch request failed: " + res.status);
+    const payload = await res.json();
+    const launch = (payload.results && payload.results[0]) || null;
+    if (!launch) throw new Error("no upcoming launch");
+
+    const name = launch.name || "Upcoming launch";
+    const provider = (launch.launch_service_provider && launch.launch_service_provider.name) ||
+                     (launch.rocket && launch.rocket.configuration && launch.rocket.configuration.full_name) ||
+                     "Rocket TBD";
+    const pad = (launch.pad && (launch.pad.name || (launch.pad.location && launch.pad.location.name))) || "";
+
+    body.innerHTML = `
+      <p class="launch-mission">${escapeHtml(name)}</p>
+      <p class="launch-meta">${escapeHtml(provider)}${pad ? " · " + escapeHtml(pad) : ""}</p>
+      <div class="countdown" id="countdown">
+        <div><span class="num" id="cd-d">00</span><span class="unit">days</span></div>
+        <div><span class="num" id="cd-h">00</span><span class="unit">hrs</span></div>
+        <div><span class="num" id="cd-m">00</span><span class="unit">min</span></div>
+        <div><span class="num" id="cd-s">00</span><span class="unit">sec</span></div>
+      </div>
+    `;
+
+    const targetDate = launch.net ? new Date(launch.net) : null;
+    if (countdownInterval) clearInterval(countdownInterval);
+    if (targetDate && !isNaN(targetDate)) {
+      const update = () => {
+        const diff = targetDate - new Date();
+        if (diff <= 0) {
+          clearInterval(countdownInterval);
+          document.getElementById("countdown").outerHTML = `<p class="launch-meta">Liftoff window has opened.</p>`;
+          return;
+        }
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById("cd-d").textContent = String(d).padStart(2, "0");
+        document.getElementById("cd-h").textContent = String(h).padStart(2, "0");
+        document.getElementById("cd-m").textContent = String(m).padStart(2, "0");
+        document.getElementById("cd-s").textContent = String(s).padStart(2, "0");
+      };
+      update();
+      countdownInterval = setInterval(update, 1000);
+    }
+  } catch (err) {
+    console.warn("Launch widget failed", err);
+    body.innerHTML = `<p class="error-text">Launch schedule unavailable right now.</p>`;
+  }
+}
+
+const PLANETS = [
+  { englishName: "Mercury", meanRadius: 2439.7,  gravity: 3.7,  mass: { massValue: 3.301, massExponent: 23 }, moons: [] },
+  { englishName: "Venus",   meanRadius: 6051.8,  gravity: 8.87, mass: { massValue: 4.867, massExponent: 24 }, moons: [] },
+  { englishName: "Earth",   meanRadius: 6371.0,  gravity: 9.8,  mass: { massValue: 5.972, massExponent: 24 }, moons: [1] },
+  { englishName: "Mars",    meanRadius: 3389.5,  gravity: 3.71, mass: { massValue: 6.417, massExponent: 23 }, moons: [1,2] },
+  { englishName: "Jupiter", meanRadius: 69911,   gravity: 24.79,mass: { massValue: 1.898, massExponent: 27 }, moons: Array(95) },
+  { englishName: "Saturn",  meanRadius: 58232,   gravity: 10.44,mass: { massValue: 5.683, massExponent: 26 }, moons: Array(146) },
+  { englishName: "Uranus",  meanRadius: 25362,   gravity: 8.69, mass: { massValue: 8.681, massExponent: 25 }, moons: Array(28) },
+  { englishName: "Neptune", meanRadius: 24622,   gravity: 11.15,mass: { massValue: 1.024, massExponent: 26 }, moons: Array(16) },
+];
+
+async function loadAlmanac() {
+  const canvas = document.getElementById("skychart-canvas");
+  const ctx = canvas.getContext("2d");
+  const readout = document.getElementById("skychart-readout");
+  try {
+    drawSkyChart(ctx, canvas, PLANETS);
+    cyclePlanetReadout(readout, PLANETS);
+  } catch (err) {
+    console.warn("Almanac widget failed", err);
+    readout.textContent = "Couldn't render the solar system chart.";
+  }
+}
+
+function drawSkyChart(ctx, canvas, planets) {
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  for (let i = 0; i < 60; i++) {
+    ctx.fillStyle = `rgba(200, 214, 240, ${Math.random() * 0.5 + 0.1})`;
+    ctx.beginPath();
+    ctx.arc(Math.random() * w, Math.random() * h, Math.random() * 1.1, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const n = planets.length;
+  const marginX = 50;
+  const usableW = w - marginX * 2;
+  const points = planets.map((p, i) => {
+    const x = marginX + (usableW / (n - 1)) * i;
+    const y = h / 2 + Math.sin(i * 1.4) * (h * 0.22);
+    return { x, y, planet: p };
+  });
+
+  ctx.strokeStyle = "rgba(74, 111, 151, 0.55)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  points.forEach((pt, i) => {
+    if (i === 0) ctx.moveTo(pt.x, pt.y);
+    else ctx.lineTo(pt.x, pt.y);
+  });
+  ctx.stroke();
+
+  points.forEach(({ x, y, planet }) => {
+    const r = Math.max(3, Math.min(11, Math.log((planet.meanRadius || 1000) + 1) * 1.4));
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, r * 2.2);
+    grad.addColorStop(0, "rgba(232,168,84,0.9)");
+    grad.addColorStop(1, "rgba(232,168,84,0)");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(x, y, r * 2.2, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#ece4cf";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.font = "12px 'Cormorant Garamond', serif";
+    ctx.fillStyle = "rgba(217, 225, 242, 0.8)";
+    ctx.textAlign = "center";
+    ctx.fillText(planet.englishName, x, y + r + 16);
+  });
+}
+
+let almanacCycleTimer = null;
+function cyclePlanetReadout(readout, planets) {
+  let i = 0;
+  const show = () => {
+    const p = planets[i % planets.length];
+    const massText = p.mass ? `${p.mass.massValue} × 10^${p.mass.massExponent} kg` : "unknown mass";
+    const moonCount = Array.isArray(p.moons) ? p.moons.length : (p.moons || 0);
+    readout.innerHTML =
+      `<span class="planet-name">${p.englishName}</span> — mean radius ${Math.round(p.meanRadius).toLocaleString()} km · ` +
+      `gravity ${p.gravity} m/s² · ${massText} · ${moonCount} known moon(s)`;
+    i++;
+  };
+  show();
+  if (almanacCycleTimer) clearInterval(almanacCycleTimer);
+  almanacCycleTimer = setInterval(show, 4500);
+}
+
+function initStarfield() {
+  const canvas = document.getElementById("sky");
+  const ctx = canvas.getContext("2d");
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const density = Math.floor((canvas.width * canvas.height) / 9000);
+    stars = Array.from({ length: density }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.3 + 0.2,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.015 + 0.005,
+    }));
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach((s) => {
+      const twinkle = Math.sin(t * s.speed + s.phase) * 0.4 + 0.6;
+      ctx.fillStyle = `rgba(217, 225, 242, ${twinkle})`;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+  requestAnimationFrame(draw);
+}
+
+function init() {
+  applyName();
+  renderQuickLinks();
+  initNotes();
+  initStarfield();
+
+  tickClock();
+  setInterval(tickClock, 1000);
+
+  loadApod();
+  loadIss();
+  loadPeopleInSpace();
+  loadNextLaunch();
+  loadAlmanac();
+
+  setInterval(loadIss, 5000);
+  setInterval(loadPeopleInSpace, 60000);
+}
+
+document.addEventListener("DOMContentLoaded", init);
+
+</script>
+</body>
+</html>
