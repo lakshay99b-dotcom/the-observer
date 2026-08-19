@@ -2,7 +2,7 @@
 
 Observatory-styled new tab page.
 
-**Live:** https://lakshay99b-dotcom.github.io/the-observer/
+**Live:** https://observer.edgeone.dev/
 
 ## Structure
 
