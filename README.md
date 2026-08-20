@@ -17,9 +17,15 @@ Live demo: https://observer.edgeone.dev/
 
 ## How to run
 
-Just open `index.html` in a browser.
+Open `index.html` in a browser.
 
-For the NASA picture you should replace `DEMO_KEY` in the file with your own free key from https://api.nasa.gov
+For the NASA picture replace `DEMO_KEY` in `script.js` with your own free key from https://api.nasa.gov
+
+## Files
+
+- `index.html` - page structure
+- `style.css` - styles
+- `script.js` - all the logic
 
 ## Sources / Credits
 
