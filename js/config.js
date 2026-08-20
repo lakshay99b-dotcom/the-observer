@@ -1,8 +1,3 @@
-/* ============================================================
-   ALMANAC — config
-   API endpoints + defaults. No real secrets live here.
-   ============================================================ */
-
 const CONFIG = {
   // localStorage keys
   SETTINGS_KEY: "almanac:settings:v1",
