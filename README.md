@@ -1,38 +1,40 @@
 # The Observer
 
-A simple new tab page with a dark space theme.
+My custom new tab page for the Stardance mission.
 
-Live demo: https://observer.edgeone.dev/
+Demo: https://observer.edgeone.dev/
 
-## What it does
+## Features
 
-- Live clock and greeting
+- Clock + greeting that changes with time of day
 - Search bar
-- Quick links (GitHub, Stardance, YouTube)
-- NASA Astronomy Picture of the Day
-- Field notes (saved in localStorage)
-- ISS position
-- Number of people currently in space
-- Changeable display name
+- Quick links with icons
+- NASA Picture of the Day
+- Notes that save automatically
+- Live ISS position
+- How many people are in space right now
+- You can change the name that shows up
 
-## How to run
+## Setup
 
-Open `index.html` in a browser.
+1. Clone the repo or just download the files
+2. Open `index.html` in your browser
+3. For the NASA picture to work, get a free key from https://api.nasa.gov and put it in `script.js` (replace DEMO_KEY)
 
-For the NASA picture replace `DEMO_KEY` in `script.js` with your own free key from https://api.nasa.gov
+## Project structure
 
-## Files
+```
+index.html   - main page
+style.css    - all the styles
+script.js    - logic and api calls
+```
 
-- `index.html` - page structure
-- `style.css` - styles
-- `script.js` - all the logic
+## APIs and stuff I used
 
-## Sources / Credits
+- NASA APOD: https://api.nasa.gov
+- ISS location: https://wheretheiss.at
+- People in space: http://api.open-notify.org
+- Background photo from Unsplash
+- Fonts from Google Fonts (Inter and Cormorant Garamond)
 
-- NASA APOD API → https://api.nasa.gov
-- ISS position → https://wheretheiss.at
-- People in space → http://api.open-notify.org
-- Background image → Unsplash (https://images.unsplash.com/photo-1462331940025-496dfbfc7564)
-- Fonts → Google Fonts (Inter + Cormorant Garamond)
-
-Built for the Stardance "Give Your Website a Pulse" mission.
+Made for Stardance - Give Your Website a Pulse
