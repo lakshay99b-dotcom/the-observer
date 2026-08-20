@@ -1,11 +1,5 @@
-/* ============================================================
-   ALMANAC — main.js
-   Vanilla JS. No frameworks.
-   ============================================================ */
-
 let settings = loadSettings();
 
-/* ---------- settings ---------- */
 function loadSettings() {
   try {
     const raw = localStorage.getItem(CONFIG.SETTINGS_KEY);
@@ -26,7 +20,6 @@ function saveSettings(s) {
   }
 }
 
-/* ---------- clock + greeting ---------- */
 function tickClock() {
   const now = new Date();
   const clock = document.getElementById("clock");
@@ -52,16 +45,12 @@ function tickClock() {
 function applyName() {
   document.getElementById("user-name").textContent = settings.name || "Observer";
 }
-
-/* ---------- search ---------- */
 document.getElementById("search-form").addEventListener("submit", (e) => {
   e.preventDefault();
   const q = document.getElementById("search-input").value.trim();
   if (!q) return;
   window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(q);
 });
-
-/* ---------- quick links ---------- */
 function renderQuickLinks() {
   const nav = document.getElementById("quicklinks");
   nav.innerHTML = "";
@@ -80,8 +69,6 @@ function escapeHtml(str) {
   div.textContent = str;
   return div.innerHTML;
 }
-
-/* ---------- notes ---------- */
 function initNotes() {
   const area = document.getElementById("notes-area");
   const status = document.getElementById("notes-status");
@@ -97,8 +84,6 @@ function initNotes() {
     }, 500);
   });
 }
-
-/* ---------- modals ---------- */
 function openModal(id) {
   document.getElementById(id).classList.add("open");
 }
@@ -156,8 +141,6 @@ document.getElementById("settings-save").addEventListener("click", () => {
   renderQuickLinks();
   closeModal("settings-modal-backdrop");
 });
-
-/* ---------- NASA APOD ---------- */
 async function loadApod() {
   const body = document.getElementById("apod-body");
   const key = settings.nasaKey || CONFIG.nasaDemoKey;
@@ -166,8 +149,6 @@ async function loadApod() {
     if (!res.ok) throw new Error("APOD request failed: " + res.status);
     const data = await res.json();
 
-    // NASA blocks iframe embedding on many media files (X-Frame-Options: sameorigin)
-    // so we use <video> for videos and <img> for images
     const mediaUrl = data.hdurl || data.url;
     const mediaHtml =
       data.media_type === "video"
@@ -199,7 +180,6 @@ document.getElementById("apod-modal-backdrop").addEventListener("click", (e) => 
   if (e.target.id === "apod-modal-backdrop") closeModal("apod-modal-backdrop");
 });
 
-/* ---------- ISS tracker ---------- */
 function projectToMap(lat, lon) {
   const x = ((lon + 180) / 360) * 100;
   const y = ((90 - lat) / 180) * 100;
@@ -226,8 +206,6 @@ async function loadIss() {
     document.getElementById("iss-lat").textContent = "n/a";
   }
 }
-
-/* ---------- people in space ---------- */
 async function loadPeopleInSpace() {
   const countEl = document.getElementById("people-count");
   const listEl = document.getElementById("people-list");
@@ -249,8 +227,6 @@ async function loadPeopleInSpace() {
     listEl.innerHTML = `<li class="error-text">Roster unavailable right now.</li>`;
   }
 }
-
-/* ---------- next launch ---------- */
 let countdownInterval = null;
 
 async function loadNextLaunch() {
@@ -310,7 +286,6 @@ async function loadNextLaunch() {
   }
 }
 
-/* ---------- solar system chart ---------- */
 const PLANETS = [
   { englishName: "Mercury", meanRadius: 2439.7, gravity: 3.7, mass: { massValue: 3.301, massExponent: 23 }, moons: [] },
   { englishName: "Venus", meanRadius: 6051.8, gravity: 8.87, mass: { massValue: 4.867, massExponent: 24 }, moons: [] },
@@ -406,7 +381,6 @@ function cyclePlanetReadout(readout, planets) {
   almanacCycleTimer = setInterval(show, CONFIG.planetCycle);
 }
 
-/* ---------- starfield ---------- */
 function initStarfield() {
   const canvas = document.getElementById("sky");
   const ctx = canvas.getContext("2d");
@@ -442,7 +416,6 @@ function initStarfield() {
   requestAnimationFrame(draw);
 }
 
-/* ---------- init ---------- */
 function init() {
   applyName();
   renderQuickLinks();
