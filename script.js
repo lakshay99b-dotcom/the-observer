@@ -98,13 +98,17 @@ async function getIss(){
   }
 }
 getIss();
-setInterval(getIss,20000);
+setInterval(getIss,25000);
 
 async function getPeople(){
   try{
-    const r = await fetch('http://api.open-notify.org/astros.json');
+    const r = await fetch('https://corquaid.github.io/astronomy-api/api/people-in-space.json');
     const d = await r.json();
-    peopleEl.innerHTML = `${d.number} humans currently in orbit`;
+    if(d.number){
+      peopleEl.innerHTML = d.number + ' humans currently in orbit';
+    }else{
+      peopleEl.textContent = 'Could not fetch crew info';
+    }
   }catch(e){
     peopleEl.textContent = 'Could not fetch crew info';
   }
