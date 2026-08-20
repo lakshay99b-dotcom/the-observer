@@ -2,7 +2,7 @@
 
 My custom new tab page for the Stardance mission.
 
-Demo: https://observer.edgeone.dev/
+Demo: https://the-observer-angvey.vercel.app
 
 ## Features
 
