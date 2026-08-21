@@ -45,11 +45,27 @@
     </div>
   </div>
 
-  <div class="card settings">
-    <h2>Settings</h2>
-    <label>Your name</label>
+  <button class="settings-btn" id="openSettings" type="button">Settings</button>
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Settings</h2>
+      <button class="close-btn" id="closeSettings" type="button">&times;</button>
+    </div>
+
+    <label class="field-label">YOUR NAME</label>
     <input type="text" id="nameInput" placeholder="Observer">
-    <button id="saveBtn">Save</button>
+
+    <label class="field-label">NASA API KEY <span class="opt">(optional, get one)</span></label>
+    <input type="text" id="apiKeyInput" placeholder="DEMO_KEY">
+
+    <label class="field-label">BOOKMARKS</label>
+    <div id="bookmarkList"></div>
+    <button class="add-bm" id="addBookmark" type="button">+ Add bookmark</button>
+
+    <button class="save-btn" id="saveBtn" type="button">Save changes</button>
   </div>
 </div>
 
