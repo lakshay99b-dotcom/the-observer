@@ -63,15 +63,34 @@ links.forEach(l=>{
   ql.appendChild(a);
 });
 
-document.getElementById('search').onkeydown = e=>{
-  if(e.key === 'Enter'){
-    const q = e.target.value.trim();
-    if(q){
-      window.open('https://www.google.com/search?q='+encodeURIComponent(q),'_blank');
-      e.target.value = '';
-    }
+function doSearch(){
+  const input = document.getElementById('search');
+  const q = input.value.trim();
+  if(!q) return;
+
+  let isUrl = false;
+  if(q.startsWith('http://') || q.startsWith('https://')){
+    isUrl = true;
+  }else if(q.includes('.') && !q.includes(' ')){
+    isUrl = true;
   }
-};
+
+  if(isUrl){
+    let url = q;
+    if(!url.startsWith('http')) url = 'https://' + url;
+    window.open(url, '_blank');
+  }else{
+    window.open('https://www.google.com/search?q=' + encodeURIComponent(q), '_blank');
+  }
+  input.value = '';
+}
+
+document.getElementById('search').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    doSearch();
+  }
+});
 
 async function getApod(){
   try{
@@ -110,7 +129,13 @@ async function getPeople(){
       peopleEl.textContent = 'Could not fetch crew info';
     }
   }catch(e){
-    peopleEl.textContent = 'Could not fetch crew info';
+    try{
+      const r2 = await fetch('https://api.open-notify.org/astros.json');
+      const d2 = await r2.json();
+      peopleEl.innerHTML = d2.number + ' humans currently in orbit';
+    }catch(e2){
+      peopleEl.textContent = 'Could not fetch crew info';
+    }
   }
 }
 getPeople();
