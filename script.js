@@ -25,15 +25,15 @@ if(savedName){
   unameEl.textContent = savedName;
   nameInput.value = savedName;
 }
-document.getElementById('saveBtn').onclick = ()=>{
-  let v = nameInput.value.trim() || 'Observer';
+document.getElementById('saveBtn').onclick = function(){
+  var v = nameInput.value.trim() || 'Observer';
   localStorage.setItem('obs-name',v);
   unameEl.textContent = v;
 };
 
 const savedNotes = localStorage.getItem('obs-notes');
 if(savedNotes) notesEl.value = savedNotes;
-notesEl.oninput = ()=>{
+notesEl.oninput = function(){
   localStorage.setItem('obs-notes',notesEl.value);
 };
 
@@ -54,9 +54,9 @@ const links = [
     svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31.5 31.5 0 000 12a31.5 31.5 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31.5 31.5 0 0024 12a31.5 31.5 0 00-.5-5.8zM9.8 15.5v-7l6.2 3.5-6.2 3.5z"/></svg>'
   }
 ];
-const ql = document.getElementById('qlinks');
-links.forEach(l=>{
-  const a = document.createElement('a');
+var ql = document.getElementById('qlinks');
+links.forEach(function(l){
+  var a = document.createElement('a');
   a.href = l.u;
   a.target = '_blank';
   a.innerHTML = l.svg + l.n;
@@ -64,42 +64,39 @@ links.forEach(l=>{
 });
 
 function doSearch(){
-  const input = document.getElementById('search');
-  const q = input.value.trim();
+  var input = document.getElementById('search');
+  var q = input.value.trim();
   if(!q) return;
 
-  let isUrl = false;
-  if(q.startsWith('http://') || q.startsWith('https://')){
+  var isUrl = false;
+  if(q.indexOf('http://') === 0 || q.indexOf('https://') === 0){
     isUrl = true;
-  }else if(q.includes('.') && !q.includes(' ')){
+  } else if(q.indexOf('.') !== -1 && q.indexOf(' ') === -1){
     isUrl = true;
   }
 
   if(isUrl){
-    let url = q;
-    if(!url.startsWith('http')) url = 'https://' + url;
-    window.open(url, '_blank');
-  }else{
-    window.open('https://www.google.com/search?q=' + encodeURIComponent(q), '_blank');
+    var url = q;
+    if(url.indexOf('http') !== 0) url = 'https://' + url;
+    window.location.href = url;
+  } else {
+    window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(q);
   }
-  input.value = '';
 }
 
-document.getElementById('search').addEventListener('keydown', function(e){
-  if(e.key === 'Enter'){
-    e.preventDefault();
-    doSearch();
-  }
+document.getElementById('searchForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  doSearch();
 });
 
 async function getApod(){
   try{
-    const r = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY');
-    const d = await r.json();
+    var r = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY');
+    var d = await r.json();
     if(d.media_type === 'image'){
-      apodEl.innerHTML = `<img class="apod-img" src="${d.url}" alt="${d.title}"><div class="apod-title">${d.title}</div><div class="apod-text">${d.explanation.slice(0,200)}...</div>`;
+      apodEl.innerHTML = '<img class="apod-img" src="' + d.url + '" alt="' + d.title + '"><div class="apod-title">' + d.title + '</div><div class="apod-text">' + d.explanation.slice(0,200) + '...</div>';
     }else{
-      apodEl.innerHTML = `<p>Today is a video. <a href="${d.url}" target="_blank" style="color:#e8a854">Open it</a></p>`;
+      apodEl.innerHTML = '<p>Today is a video. <a href="' + d.url + '" target="_blank" style="color:#e8a854">Open it</a></p>';
     }
   }catch(e){
     apodEl.innerHTML = '<p class="loading">Couldnt load APOD right now</p>';
@@ -109,9 +106,9 @@ getApod();
 
 async function getIss(){
   try{
-    const r = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
-    const d = await r.json();
-    issEl.innerHTML = `Lat ${d.latitude.toFixed(2)}° · Lon ${d.longitude.toFixed(2)}°<br>Alt ${d.altitude.toFixed(0)} km · ${d.velocity.toFixed(0)} km/h`;
+    var r = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+    var d = await r.json();
+    issEl.innerHTML = 'Lat ' + d.latitude.toFixed(2) + '° · Lon ' + d.longitude.toFixed(2) + '°<br>Alt ' + d.altitude.toFixed(0) + ' km · ' + d.velocity.toFixed(0) + ' km/h';
   }catch(e){
     issEl.textContent = 'ISS data unavailable';
   }
@@ -121,21 +118,15 @@ setInterval(getIss,25000);
 
 async function getPeople(){
   try{
-    const r = await fetch('https://corquaid.github.io/astronomy-api/api/people-in-space.json');
-    const d = await r.json();
+    var r = await fetch('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json');
+    var d = await r.json();
     if(d.number){
       peopleEl.innerHTML = d.number + ' humans currently in orbit';
     }else{
       peopleEl.textContent = 'Could not fetch crew info';
     }
   }catch(e){
-    try{
-      const r2 = await fetch('https://api.open-notify.org/astros.json');
-      const d2 = await r2.json();
-      peopleEl.innerHTML = d2.number + ' humans currently in orbit';
-    }catch(e2){
-      peopleEl.textContent = 'Could not fetch crew info';
-    }
+    peopleEl.textContent = 'Could not fetch crew info';
   }
 }
 getPeople();
